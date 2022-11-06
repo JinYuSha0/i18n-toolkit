@@ -1,6 +1,6 @@
 {
   "name": "i18n-toolkit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "i18n toolkit, Maintain i18n through online sheet",
   "main": "index.js",
   "files": [
@@ -28,6 +28,6 @@
     "google-spreadsheet": "^3.3.0"
   },
   "bin": {
-    "i18n-tookit": "bin.js"
+    "i18n-toolkit": "bin.js"
   }
 }
