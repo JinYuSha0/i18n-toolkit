@@ -1,0 +1,33 @@
+{
+  "name": "i18n-toolkit",
+  "version": "0.0.1",
+  "description": "i18n toolkit, Maintain i18n through online sheet",
+  "main": "index.js",
+  "files": [
+    "/src",
+    "bin.js",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JinYuSha0/i18n-toolkit",
+    "baseUrl": "https://github.com/JinYuSha0/i18n-toolkit"
+  },
+  "keywords": [
+    "i18n"
+  ],
+  "scripts": {
+    "start": "node ./src/index.js ./i18n.config.json"
+  },
+  "author": {
+    "name": "Soul",
+    "email": "a1009943858@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "google-spreadsheet": "^3.3.0"
+  },
+  "bin": {
+    "i18n-tookit": "bin.js"
+  }
+}

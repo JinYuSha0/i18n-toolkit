@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+i18n/
+*.log
+*.lock
+i18n.config.json
