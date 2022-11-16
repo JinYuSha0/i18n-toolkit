@@ -57,4 +57,4 @@ function AutoGenerateKey(rowIndex, value) {
 }
 ```
 
-7.执行 i18n-tookit 拉取多语言文件`i18n-tookit`或`yarn i18n-tookit`
+7.执行 i18n-toolkit 拉取多语言文件`i18n-toolkit`或`yarn i18n-toolkit`

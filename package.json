@@ -1,6 +1,6 @@
 {
   "name": "i18n-toolkit",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "i18n toolkit, Maintain i18n through online sheet",
   "main": "index.js",
   "files": [
@@ -25,7 +25,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "google-spreadsheet": "^3.3.0"
+    "@shaojinyu/google-spreadsheet": "^3.3.0",
+    "socks-proxy-agent": "^7.0.0"
   },
   "bin": {
     "i18n-toolkit": "bin.js"
