@@ -32,21 +32,37 @@ async function getSheet() {
     const doc = new GoogleSpreadsheet(spreadsheetId, agent);
     await doc.useApiKey(apiKey);
     await doc.loadInfo();
-    const sheet = doc.sheetsByIndex[tableIndex];
-    const rows = await sheet.getRows();
-    const map = {};
-    langues.forEach((lang) => (map[lang] = {}));
-    rows.forEach((row) => {
-      const key = row._rawData[0];
-      if (!key) return;
-      langues.forEach((lang) => {
-        map[lang][key] = row[lang];
+    async function processSheet(index) {
+      const sheet = doc.sheetsByIndex[index];
+      let suffix = Array.isArray(tableIndex) ? `${sheet.title}.` : "";
+      const rows = await sheet.getRows();
+      const map = {};
+      langues.forEach((lang) => (map[lang] = {}));
+      rows.forEach((row) => {
+        const key = row._rawData[0];
+        if (!key) return;
+        langues.forEach((lang) => {
+          map[lang][key] = row[lang];
+        });
       });
-    });
-    createDirIfNotExists(OUT_PUT_DIR);
-    Object.keys(map).forEach((lang) => {
-      writeJsonFile(path.join(OUT_PUT_DIR, `${lang}.json`), map[lang]);
-    });
+      createDirIfNotExists(OUT_PUT_DIR);
+      Object.keys(map).forEach((lang) => {
+        writeJsonFile(
+          path.join(OUT_PUT_DIR, `${lang}.${suffix}json`),
+          map[lang]
+        );
+      });
+    }
+    if (Array.isArray(tableIndex)) {
+      const promises = [];
+      tableIndex.forEach((index) => {
+        promises.push(processSheet(index));
+      });
+      await Promise.all(promises);
+    } else {
+      await processSheet(tableIndex);
+    }
+    console.log("\x1b[32m", "Done");
   } catch (err) {
     console.log("\x1B[31m", "Download failure cause: " + err.message);
   }
