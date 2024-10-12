@@ -34,6 +34,7 @@ async function getSheet() {
     await doc.loadInfo();
     async function processSheet(index) {
       const sheet = doc.sheetsByIndex[index];
+      if (!sheet) return;
       let suffix = Array.isArray(tableIndex) ? `${sheet.title}.` : "";
       const rows = await sheet.getRows();
       const map = {};
