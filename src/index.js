@@ -18,6 +18,7 @@ const {
   tableIndex,
   langues,
   socksProxy,
+  folderExpand = false,
 } = require(CONFIG_PATH);
 
 const OUT_PUT_DIR = path.join(process.cwd(), outputDir);
@@ -38,20 +39,28 @@ async function getSheet() {
       let suffix = Array.isArray(tableIndex) ? `${sheet.title}.` : "";
       const rows = await sheet.getRows();
       const map = {};
-      langues.forEach((lang) => (map[lang] = {}));
       rows.forEach((row) => {
         const key = row._rawData[0];
         if (!key) return;
         langues.forEach((lang) => {
+          if (!map[lang]) map[lang] = {};
           map[lang][key] = row[lang];
         });
       });
-      createDirIfNotExists(OUT_PUT_DIR);
-      Object.keys(map).forEach((lang) => {
-        writeJsonFile(
-          path.join(OUT_PUT_DIR, `${lang}.${suffix}json`),
-          map[lang]
-        );
+      langues.forEach((lang) => {
+        const CURR_OUT_PUT_DIR = folderExpand
+          ? path.join(OUT_PUT_DIR, lang)
+          : OUT_PUT_DIR;
+        createDirIfNotExists(CURR_OUT_PUT_DIR);
+        Object.keys(map).forEach((lang) => {
+          writeJsonFile(
+            path.join(
+              CURR_OUT_PUT_DIR,
+              folderExpand ? `${suffix}json` : `${lang}.${suffix}json`
+            ),
+            map[lang]
+          );
+        });
       });
     }
     if (Array.isArray(tableIndex)) {

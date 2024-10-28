@@ -1,6 +1,6 @@
 {
   "name": "i18n-toolkit",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "i18n toolkit, Maintain i18n through online sheet",
   "main": "index.js",
   "files": [
