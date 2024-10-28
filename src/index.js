@@ -27,7 +27,7 @@ async function getSheet() {
   try {
     console.log("\x1B[36m%s\x1B[0m", "Start download i18n");
     let agent = null;
-    if (!!socksProxy) {
+    if (socksProxy) {
       agent = new SocksProxyAgent(socksProxy);
     }
     const doc = new GoogleSpreadsheet(spreadsheetId, agent);
@@ -39,28 +39,26 @@ async function getSheet() {
       let suffix = Array.isArray(tableIndex) ? `${sheet.title}.` : "";
       const rows = await sheet.getRows();
       const map = {};
+      langues.forEach((lang) => (map[lang] = {}));
       rows.forEach((row) => {
         const key = row._rawData[0];
         if (!key) return;
         langues.forEach((lang) => {
-          if (!map[lang]) map[lang] = {};
           map[lang][key] = row[lang];
         });
       });
-      langues.forEach((lang) => {
+      Object.keys(map).forEach((lang) => {
         const CURR_OUT_PUT_DIR = folderExpand
           ? path.join(OUT_PUT_DIR, lang)
           : OUT_PUT_DIR;
         createDirIfNotExists(CURR_OUT_PUT_DIR);
-        Object.keys(map).forEach((lang) => {
-          writeJsonFile(
-            path.join(
-              CURR_OUT_PUT_DIR,
-              folderExpand ? `${suffix}json` : `${lang}.${suffix}json`
-            ),
-            map[lang]
-          );
-        });
+        writeJsonFile(
+          path.join(
+            CURR_OUT_PUT_DIR,
+            folderExpand ? `${suffix}json` : `${lang}.${suffix}json`
+          ),
+          map[lang]
+        );
       });
     }
     if (Array.isArray(tableIndex)) {
