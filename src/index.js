@@ -1,8 +1,8 @@
 const path = require("path");
 const process = require("process");
 const { GoogleSpreadsheet } = require("@shaojinyu/google-spreadsheet");
-const { SocksProxyAgent } = require("socks-proxy-agent");
 const { createDirIfNotExists, writeJsonFile } = require("./fsHelper");
+const { getAgent } = require("./agent");
 
 const args = process.argv.slice(2);
 const [configPath] = args;
@@ -26,10 +26,7 @@ const OUT_PUT_DIR = path.join(process.cwd(), outputDir);
 async function getSheet() {
   try {
     console.log("\x1B[36m%s\x1B[0m", "Start download i18n");
-    let agent = null;
-    if (socksProxy) {
-      agent = new SocksProxyAgent(socksProxy);
-    }
+    const agent = await getAgent(socksProxy);
     const doc = new GoogleSpreadsheet(spreadsheetId, agent);
     await doc.useApiKey(apiKey);
     await doc.loadInfo();
